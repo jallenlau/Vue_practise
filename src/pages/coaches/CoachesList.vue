@@ -5,8 +5,13 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline">Refresh</base-button>
-        <base-button v-if="!isCoach" link to="/register">Register as Coach</base-button>
+        <base-button mode="outline" @click="loadCoachesABC">Refresh</base-button>
+        <base-button v-if="!isCoach" link to="/register"
+          >Register as Coach</base-button
+        >
+      </div>
+      <div v-if="isLoading">
+        <base-spinner></base-spinner>
       </div>
       <ul v-if="hasCoaches">
         <coach-item
@@ -27,10 +32,12 @@
 <script>
 import CoachItem from '../../components/coaches/CoachItem.vue';
 import CoachFilter from '../../components/coaches/CoachFilter.vue';
+import BaseSpinner from '../../components/ui/BaseSpinner.vue';
 
 export default {
   data() {
     return {
+      isLoading: false,
       filterdCoach: {
         frontend: true,
         backend: true,
@@ -41,6 +48,7 @@ export default {
   components: {
     CoachItem,
     CoachFilter,
+    BaseSpinner,
   },
   computed: {
     isCoach() {
@@ -69,6 +77,14 @@ export default {
     setFilter(updateFilter) {
       this.filterdCoach = updateFilter;
     },
+    async loadCoachesABC() {
+      this.isLoading = true;
+      await this.$store.dispatch('coaches/loadCoaches');
+      this.isLoading = false;
+    },
+  },
+  created() {
+    this.loadCoachesABC();
   },
 };
 </script>

@@ -2,6 +2,7 @@
   <li>
     <h3>{{ fullName }}</h3>
     <h4>${{ hourlyRate }}/hour</h4>
+    <h4>{{ id }}</h4>
     <div>
       <base-badge
         v-for="area in areas"
@@ -29,7 +30,7 @@ export default {
     },
     linkToCoachesDetail() {
       return this.$route.path + '/' + this.id;
-    }
+    },
   },
 };
 </script>
